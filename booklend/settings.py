@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o7h&e@o0v2=+w0t0&h8qokep(jn51_)d!!dt%=2ho@^=ewxep1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://booklibrary-iw35.onrender.com/']
+ALLOWED_HOSTS = ["*"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite dev server
 ]
