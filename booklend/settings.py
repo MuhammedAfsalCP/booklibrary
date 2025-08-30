@@ -81,10 +81,16 @@ WSGI_APPLICATION = 'booklend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'books_7zf0',            
+        'USER': 'books_7zf0_user',       
+        'PASSWORD': 'hhspq8vnjbqWN5LFJkj03kU6mECAraJ3', 
+        'HOST': 'dpg-d2pj1gfdiees73c2hci0-a.oregon-postgres.render.com',  
+        'PORT': '5432',                 
     }
 }
+
+
 
 
 # Password validation
