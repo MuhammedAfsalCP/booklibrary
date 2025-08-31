@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["booklibrary-iw35.onrender.com", "localhost", "127.0.0.1"]
 CORS_ALLOWED_ORIGINS = [
-    "https://booklibrary-phi.vercel.app",  # Vite dev server
+    "https://booklibrary-phi.vercel.app/",  # Vite dev server
 ]
 
 # Application definition
