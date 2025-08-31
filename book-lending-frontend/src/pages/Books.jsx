@@ -1,13 +1,18 @@
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import API from '../api/axios';
 
 export default function Books() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
 
-  const [filters, setFilters] = useState({ genre: '', author: '', available: '' });
+  const [filters, setFilters] = useState({ genre: '', author: '', available: 'true' });
   const [appliedFilters, setAppliedFilters] = useState({ genre: '', author: '', available: '' });
+
+  // 🔥 Run once on mount so first API call has filters immediately
+  useEffect(() => {
+    setAppliedFilters(filters);
+  }, []);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['books', page, appliedFilters],
@@ -39,16 +44,14 @@ export default function Books() {
     mutationFn: (bookId) => API.post('return/', { book_id: bookId }),
     onSuccess: () => {
       queryClient.invalidateQueries(['books', page]);
-偶
-
-System: queryClient.invalidateQueries(['my-borrows']);
+      queryClient.invalidateQueries(['my-borrows']);
     },
   });
 
   if (isLoading) return <div className="p-6 text-gray-600">Loading books...</div>;
   if (isError) return <div className="p-6 text-red-600">Error loading books</div>;
 
-  const books = Array.isArray(data.results) ? data.results : [];
+  const books = Array.isArray(data?.results) ? data.results : [];
   const borrowedBooks = Array.isArray(borrowedData) ? borrowedData : [];
   const borrowedBookIds = borrowedBooks.map((b) => b.book.id);
 
@@ -83,8 +86,8 @@ System: queryClient.invalidateQueries(['my-borrows']);
         </select>
         <button
           onClick={() => {
-            setAppliedFilters(filters); // Apply filters only on button click
-            setPage(1); 
+            setAppliedFilters(filters); 
+            setPage(1);
           }}
           className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors duration-200"
         >
@@ -92,7 +95,7 @@ System: queryClient.invalidateQueries(['my-borrows']);
         </button>
       </div>
 
-
+      {/* Books grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {books.map((book) => {
           const isBorrowed = borrowedBookIds.includes(book.id);
@@ -127,7 +130,7 @@ System: queryClient.invalidateQueries(['my-borrows']);
         })}
       </div>
 
-
+      {/* Pagination */}
       <div className="flex justify-center mt-8 space-x-4">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
@@ -139,7 +142,7 @@ System: queryClient.invalidateQueries(['my-borrows']);
         <span className="px-4 py-2 text-gray-700">Page {page}</span>
         <button
           onClick={() => setPage((old) => old + 1)}
-          disabled={!data.next}
+          disabled={!data?.next}
           className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50 transition-colors duration-200"
         >
           Next
